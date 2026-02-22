@@ -1,0 +1,6 @@
+rune 1
+name "test"
+version "1.0.0"
+description "Standard library test package"
+author "cocomeshy"
+license "MIT"

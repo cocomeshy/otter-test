@@ -1,0 +1,90 @@
+use memory;
+use io;
+use os;
+
+/**
+ * Assert a condition is true. If false, prints the message and exits with code 1.
+ * @param cond  The condition to check
+ * @param msg   Message to print on failure
+ */
+~> assert(cond:bool, msg:str) -> void {
+  match (cond) {
+    true -> {};
+    _ -> {
+      io.out(msg);
+      os.exit(1);
+    };
+  }
+}
+
+/**
+ * Assert two integers are equal. If not, prints the message and exits with code 1.
+ * @param got   The actual value
+ * @param want  The expected value
+ * @param msg   Message to print on failure
+ */
+~> eq(got:int, want:int, msg:str) -> void {
+  match (got == want) {
+    true -> {};
+    _ -> {
+      io.out(msg);
+      os.exit(1);
+    };
+  }
+}
+
+/**
+ * Assert two integers are NOT equal. If equal, prints the message and exits with code 1.
+ * @param a    First value
+ * @param b    Second value
+ * @param msg  Message to print on failure
+ */
+~> neq(a:int, b:int, msg:str) -> void {
+  match (a != b) {
+    true -> {};
+    _ -> {
+      io.out(msg);
+      os.exit(1);
+    };
+  }
+}
+
+/**
+ * Assert two strings are equal (byte-by-byte comparison).
+ * If not equal, prints the message and exits with code 1.
+ * @param got   The actual string
+ * @param want  The expected string
+ * @param msg   Message to print on failure
+ */
+~> str_eq(got:str, want:str, msg:str) -> void {
+  rock got_len:int = memory.strlen(got);
+  rock want_len:int = memory.strlen(want);
+
+  match (got_len != want_len) {
+    true -> {
+      io.out(msg);
+      os.exit(1);
+    };
+    _ -> {};
+  }
+
+  flow i:int = 0;
+  loop (i < got_len) {
+    match (got[i] != want[i]) {
+      true -> {
+        io.out(msg);
+        os.exit(1);
+      };
+      _ -> {};
+    }
+    i += 1;
+  }
+}
+
+/**
+ * Print an informational message (typically test-section name on success).
+ * @param msg  Message to print
+ */
+~> ok(msg:str) -> void {
+  io.out(msg);
+}
