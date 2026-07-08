@@ -1,7 +1,7 @@
 rune 1
 name "test"
 version "1.0.0"
-description "Standard library test package"
+description "Hard-exit assertions for main()-style test programs"
 author "cocomeshy"
 license "MIT"
 use "memory" want "1.0.0"
